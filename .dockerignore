@@ -1,0 +1,39 @@
+# Git
+.git
+.gitignore
+.gitattributes
+.github
+
+# IDE / Editor
+.vs
+.vscode
+*.suo
+*.user
+*.sln.docstates
+
+# Build outputs (when building from local context)
+engine/
+engine_temp/
+**/obj/
+**/bin/
+
+# Temporary files
+*.zip
+*.tmp
+engine.zip
+
+# Documentation
+*.md
+!mod.config
+
+# Packaging (not needed for server)
+packaging/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Server configuration (contains secrets)
+server.env
