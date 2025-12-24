@@ -2,7 +2,10 @@
 # Multi-stage build for OpenRA Combined Arms mod
 #
 # Build with specific version:
-#   docker build --build-arg CA_VERSION=1.08-PreRelease-1 -t camod-server .
+#   docker build --build-arg CA_VERSION=1.08 -t camod-server .
+#
+# Build from a different fork:
+#   docker build --build-arg CA_REPO=darkademic/CAmod --build-arg CA_VERSION=1.08-DevTest-51 -t camod-server .
 #
 # Run:
 #   docker run -d -p 1234:1234/tcp -p 1234:1234/udp -e Name="My Server" camod-server
@@ -12,8 +15,9 @@
 # =============================================================================
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
-# Build argument for the mod version (git tag or branch)
-ARG CA_VERSION=1.08-PreRelease-1
+# Build arguments for the mod repository and version
+ARG CA_REPO=Inq8/CAmod
+ARG CA_VERSION=1.08
 
 # Install build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -28,7 +32,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /src
 
 # Clone the repository at the specified version
-RUN git clone --branch ${CA_VERSION} --depth 1 https://github.com/Inq8/CAmod.git .
+RUN git clone --branch ${CA_VERSION} --depth 1 https://github.com/${CA_REPO}.git .
 
 # Build the engine and mod (this fetches the engine first)
 RUN make all

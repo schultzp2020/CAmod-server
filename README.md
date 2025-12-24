@@ -9,6 +9,7 @@ This guide explains how to run a Combined Arms (CAmod) dedicated server.
   - [Using Podman/Docker](#using-podmandocker)
     - [Quick Start](#quick-start)
     - [Building a Specific Version](#building-a-specific-version)
+    - [Building from a Fork](#building-from-a-fork)
     - [Configuration](#configuration)
     - [Managing the Server](#managing-the-server)
     - [Port Forwarding](#port-forwarding)
@@ -36,10 +37,10 @@ The containerized approach is the easiest way to run a dedicated server. It hand
 cd CAmod
 
 # Copy the example configuration
-cp server.env.example server.env
+cp .env.example .env
 
-# Edit server.env with your settings (server name, password, etc.)
-nano server.env
+# Edit .env with your settings (server name, password, etc.)
+nano .env
 
 # Start the server
 podman compose up -d
@@ -56,21 +57,39 @@ podman compose down
 To run a specific version of Combined Arms, set the `CA_VERSION` variable to any [git tag or branch](https://github.com/Inq8/CAmod/tags):
 
 ```bash
-# Edit server.env and change CA_VERSION, then rebuild
-CA_VERSION=1.07.1 podman compose up -d --build
+# Edit .env and change CA_VERSION, then rebuild
+podman compose up -d --build
 
 # Or build manually
 podman build --build-arg CA_VERSION=1.07.1 -t camod-server:1.07.1 .
 podman run -d -p 1234:1234/tcp -p 1234:1234/udp camod-server:1.07.1
 ```
 
+### Building from a Fork
+
+To build from a different fork (e.g., for dev/test releases), set the `CA_REPO` variable:
+
+```bash
+# Edit .env to use a different fork
+CA_REPO=darkademic/CAmod
+CA_VERSION=1.08-DevTest-51
+
+# Then rebuild
+podman compose up -d --build
+```
+
+Available forks:
+- `Inq8/CAmod` - Official releases (default)
+- `darkademic/CAmod` - Dev/test builds
+
 ### Configuration
 
-All server settings are configured via environment variables in `server.env`:
+All server settings are configured via environment variables in `.env`:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `CA_VERSION` | `1.08-PreRelease-1` | Git tag/branch to build |
+| `CA_REPO` | `Inq8/CAmod` | GitHub repository to build from |
+| `CA_VERSION` | `1.08` | Git tag/branch to build |
 | `Name` | `Combined Arms Server` | Server name shown in lobby |
 | `ListenPort` | `1234` | Port for TCP and UDP |
 | `AdvertiseOnline` | `True` | Show in master server list |
@@ -135,16 +154,16 @@ git clone https://github.com/Inq8/CAmod.git
 cd CAmod
 
 # Checkout a specific version (optional)
-git checkout 1.08-PreRelease-1
+git checkout 1.08
 
 # Build everything (fetches engine automatically)
 # Linux/macOS:
 make all
-make version VERSION=1.08-PreRelease-1
+make version VERSION=1.08
 
 # Windows (PowerShell):
 .\make.cmd all
-.\make.cmd version 1.08-PreRelease-1
+.\make.cmd version 1.08
 ```
 
 ### Running the Server

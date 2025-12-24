@@ -1,28 +1,29 @@
 # Combined Arms Dedicated Server - Docker Compose
 #
 # Usage:
-#   podman compose up -d              # Start with defaults from server.env
+#   podman compose up -d              # Start with defaults from .env
 #   podman compose up -d --build      # Rebuild and start
 #   podman compose logs -f            # View logs
 #   podman compose down               # Stop and remove
 #
 # Configuration:
-#   Copy server.env.example to server.env and modify settings as needed
+#   Copy .env.example to .env and modify settings as needed
 
 services:
   camod-server:
     build:
       context: .
       args:
-        CA_VERSION: ${CA_VERSION:-1.08-PreRelease-1}
-    image: camod-server:${CA_VERSION:-1.08-PreRelease-1}
+        CA_REPO: ${CA_REPO:-Inq8/CAmod}
+        CA_VERSION: ${CA_VERSION:-1.08}
+    image: camod-server:${CA_VERSION:-1.08}
     container_name: camod-dedicated
     restart: unless-stopped
     ports:
       - "${ListenPort:-1234}:${ListenPort:-1234}/tcp"
       - "${ListenPort:-1234}:${ListenPort:-1234}/udp"
     env_file:
-      - server.env
+      - .env
     volumes:
       # Persist replays and other support data (optional)
       - camod-data:/app/support
