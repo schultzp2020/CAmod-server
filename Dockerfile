@@ -7,6 +7,9 @@
 # Build from a different fork:
 #   docker build --build-arg CA_REPO=darkademic/CAmod --build-arg CA_VERSION=1.08-DevTest-51 -t camod-server .
 #
+# Default lobby options:
+#   Edit server-overrides.yaml, then restart (or rebuild to bake in)
+#
 # Run:
 #   docker run -d -p 1234:1234/tcp -p 1234:1234/udp -e Name="My Server" camod-server
 
@@ -39,6 +42,12 @@ RUN make all
 
 # Set the version string in mod.yaml AFTER engine is fetched
 RUN make version VERSION=${CA_VERSION}
+
+# Copy server overrides (sets default lobby options like queue type)
+COPY server-overrides.yaml /src/mods/ca/rules/server-overrides.yaml
+
+# Register server-overrides.yaml at END of Rules section (must load last to override defaults)
+RUN sed -i '/^Sequences:/i\	ca|rules/server-overrides.yaml' /src/mods/ca/mod.content.yaml
 
 # =============================================================================
 # RUNTIME STAGE

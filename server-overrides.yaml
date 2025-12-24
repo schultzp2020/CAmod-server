@@ -1,0 +1,88 @@
+# Combined Arms Server Default Options
+# These settings override the default lobby options when starting a new game.
+#
+# Uncomment and modify the options you want to change.
+#
+# To apply changes:
+#   Runtime (no rebuild):  podman compose restart
+#   Build-time (baked in): podman compose up -d --build
+#
+# IMPORTANT: OpenRA uses TABS for indentation, not spaces!
+#
+# Reference: https://www.openra.net/book/modding/default-map-options-on-server.html
+
+Player:
+	# =========================================================================
+	# Production Type (Queue Type)
+	# =========================================================================
+	# Options:
+	#   global.singlequeue      - Competitive (one queue per type)
+	#   global.multiqueuefull   - Classic (multiple queues, full speed)
+	#   global.multiqueuescaled - Classic (multiple queues, scaled speed)
+	#
+	LobbyPrerequisiteDropdown@QUEUETYPE:
+		Default: global.multiqueuescaled
+
+	# =========================================================================
+	# Lobby Checkboxes
+	# =========================================================================
+	# Kill Bounties: earn cash for kills
+	# LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
+	#	Enabled: true
+
+	# Redeployable MCVs: allow MCV to undeploy
+	# LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
+	#	Enabled: true
+
+	# Force Shield: enable force shield support power
+	# LobbyPrerequisiteCheckbox@FORCESHIELD:
+	#	Enabled: true
+
+	# Naval Units: enable naval units
+	# LobbyPrerequisiteCheckbox@NAVY:
+	#	Enabled: true
+
+	# Balanced Harvesting: harvesters collect resources more evenly
+	# LobbyPrerequisiteCheckbox@BALANCEDHARVESTING:
+	#	Enabled: true
+
+	# Fast Regrowth: ore/tiberium regrows faster
+	# LobbyPrerequisiteCheckbox@FASTREGROWTH:
+	#	Enabled: false
+
+	# Reveal on Fire: units reveal when attacking
+	# LobbyPrerequisiteCheckbox@REVEALONFIRE:
+	#	Enabled: false
+
+	# =========================================================================
+	# Starting Resources
+	# =========================================================================
+	# PlayerResources:
+	#	DefaultCash: 5000
+
+	# =========================================================================
+	# Fog of War / Shroud
+	# =========================================================================
+	# Shroud:
+	#	ExploredMapCheckboxEnabled: false
+	#	FogCheckboxEnabled: true
+
+# World:
+	# =========================================================================
+	# Map Options
+	# =========================================================================
+	# MapOptions:
+	#	# Game speed: slowest, slower, default, fast, faster, fastest
+	#	GameSpeed: default
+	#
+	#	# Tech level: unrestricted, low, medium, nosuperweapons
+	#	TechLevel: unrestricted
+	#
+	#	# Short game (destroy buildings to win)
+	#	ShortGameCheckboxEnabled: true
+
+	# =========================================================================
+	# Crates
+	# =========================================================================
+	# CrateSpawner:
+	#	CheckboxEnabled: true

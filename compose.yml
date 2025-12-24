@@ -8,6 +8,9 @@
 #
 # Configuration:
 #   Copy .env.example to .env and modify settings as needed
+#
+# Default Lobby Options:
+#   Edit server-overrides.yaml, then `podman compose restart` to apply changes (no rebuild needed)
 
 services:
   camod-server:
@@ -27,6 +30,8 @@ services:
     volumes:
       # Persist replays and other support data (optional)
       - camod-data:/app/support
+      # Runtime lobby option overrides
+      - ./server-overrides.yaml:/app/mods/ca/rules/server-overrides.yaml:ro
 
 volumes:
   camod-data:

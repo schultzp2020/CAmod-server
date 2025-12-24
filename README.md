@@ -10,6 +10,7 @@ This guide explains how to run a Combined Arms (CAmod) dedicated server.
     - [Quick Start](#quick-start)
     - [Building a Specific Version](#building-a-specific-version)
     - [Building from a Fork](#building-from-a-fork)
+    - [Default Lobby Options](#default-lobby-options)
     - [Configuration](#configuration)
     - [Managing the Server](#managing-the-server)
     - [Port Forwarding](#port-forwarding)
@@ -82,6 +83,36 @@ Available forks:
 - `Inq8/CAmod` - Official releases (default)
 - `darkademic/CAmod` - Dev/test builds
 
+### Default Lobby Options
+
+The server uses sensible defaults out of the box. To customize the default lobby options (game speed, starting cash, production type, etc.), edit `server-overrides.yaml`:
+
+```bash
+# Edit with your preferred settings
+nano server-overrides.yaml
+
+# Apply changes (no rebuild needed!)
+podman compose restart
+```
+
+Example configuration:
+
+```yaml
+# server-overrides.yaml - set production type to Classic (scaled)
+Player:
+ LobbyPrerequisiteDropdown@QUEUETYPE:
+  Default: global.multiqueuescaled
+```
+
+Available queue options:
+- `global.singlequeue` - Competitive (one queue per type)
+- `global.multiqueuefull` - Classic (multiple queues, full speed)
+- `global.multiqueuescaled` - Classic (multiple queues, scaled speed)
+
+> **⚠️ Important:** OpenRA uses **TABS** for indentation, not spaces. If your editor converts tabs to spaces, the server will fail to start. Configure your editor to use tabs for `.yaml` files in this project.
+
+See `server-overrides.yaml` for all available options and the [OpenRA documentation](https://www.openra.net/book/modding/default-map-options-on-server.html) for reference.
+
 ### Configuration
 
 All server settings are configured via environment variables in `.env`:
@@ -111,13 +142,13 @@ podman compose up -d
 # View live logs
 podman compose logs -f
 
-# Restart
+# Restart (also applies server-overrides.yaml changes)
 podman compose restart
 
 # Stop
 podman compose down
 
-# Rebuild after changing CA_VERSION
+# Rebuild after changing CA_VERSION or CA_REPO
 podman compose up -d --build
 
 # Check status
